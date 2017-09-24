@@ -12,6 +12,7 @@ namespace Lodky
         {   
             string[,] BoatPos = new string[12,12];
             string[,] Boats = new string[12,12];
+            int[] Boattypes = [1, 2, 3, 4, 5];
             Neco.RenderField(1,BoatPos,Boats);
         }
     }
@@ -50,6 +51,8 @@ namespace Lodky
         }
         public static void RenderFullField(string[,] BoatPos)
         {
+            Console.Clear();
+            Console.WriteLine("Rendered");
             Console.WriteLine("     A B C D E F G H I J");
             for (int c = 0; c < BoatPos.GetLength(0); c++)
             {
@@ -74,33 +77,62 @@ namespace Lodky
             }
             Console.ReadLine();
         }
-        public static void BoatField(string[,] Boats,int Player, string[,] BoatPos)
+        public static void BoatField(string[,] Boats,int Player, string[,] BoatPos,int[] Boattype,int Boat)
         {
+            int b = 1;
+            int c = 5;
             ConsoleKeyInfo name = Console.ReadKey();
             //Console.WriteLine(name.Key);
             while (true)
             {
-                if(name.Key == ConsoleKey.DownArrow)
+                if (name.Key == ConsoleKey.DownArrow)
                 {
-                    int b = 1;
-                    int c = 5;
                     b += 1;
-                    if (b > 10)
+                    for (int i = 0; i < Boattype[Boat]; i++)
                     {
-                        b = 10;
+                        if (b > 10)
+                        {
+                            b = 10;
+                        }
+                        Boats[c + i, b] = " -";
                     }
-                    Boats[c, b] = " -";
+                        
                 }
                 if (name.Key == ConsoleKey.UpArrow)
                 {
-                    int b = 1;
-                    int c = 5;
                     b -= 1;
-                    if(b < 1)
+                    for (int i = 0; i < Boattype[Boat]; i++)
                     {
-                        b = 1;
+                        if (b > 1)
+                        {
+                            b = 1;
+                        }
+                        Boats[c + i, b] = " -";
                     }
-                    Boats[c, b] = " -";
+                }
+                if (name.Key == ConsoleKey.RightArrow)
+                {
+                    c += 1;
+                    for (int i = 0; i < Boattype[Boat]; i++)
+                    {
+                        if (c > 1)
+                        {
+                            c = 1;
+                        }
+                        Boats[c, b + i] = " -";
+                    }
+                }
+                if (name.Key == ConsoleKey.LeftArrow)
+                {
+                    c -= 1;
+                    for (int i = 0; i < Boattype[Boat]; i++)
+                    {
+                        if (b > 1)
+                        {
+                            b = 1;
+                        }
+                        Boats[c, b + i] = " -";
+                    }
                 }
                 else if(name.Key == ConsoleKey.Enter)
                 {

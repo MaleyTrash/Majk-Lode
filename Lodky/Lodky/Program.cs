@@ -31,9 +31,8 @@ namespace Lodky
     {
         public static void RenderField(int Player, string[,] BoatPos, bool check, int bB, int cB, int boat, int[] Boattypes, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, bool BoatFieldCh, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp, bool Field, bool FireFieldCh)
         {
+            bool hitCheck = false;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(Field);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Player " + Player);
             Console.ResetColor();
@@ -159,7 +158,15 @@ namespace Lodky
                         }
                         if (FireField[c, b] == FireFieldPO[c, b])
                         {
-                            FireField[c, b] = " +";
+                            if (FireFieldPO[c, b] == BoatsPT[c, b])
+                            {
+                                FireField[c, b] = " x";
+                            }
+                            else
+                            {
+                                FireField[c, b] = " +";
+
+                            }
                         }
                         if (FireFieldPO[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
@@ -175,7 +182,15 @@ namespace Lodky
                         }
                         if (FireField[c, b] == FireFieldPT[c, b])
                         {
-                            FireField[c, b] = " +";
+                            if (FireFieldPT[c, b] == BoatsPO[c, b])
+                            {
+                                FireField[c, b] = " x";
+                            }
+                            else
+                            {
+                                FireField[c, b] = " +";
+
+                            }
                         }
                         if (FireFieldPT[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
@@ -196,10 +211,12 @@ namespace Lodky
                 Console.WriteLine("Na tuto pozici bylo již vystřeleno!!!");
                 Console.ResetColor();
             }
+
             if(Player == 1)
             {
                 check = WinCheck(FireFieldPO, BoatsPO);
             }
+
             else
             {
                 check = WinCheck(FireFieldPT, BoatsPT);
@@ -226,8 +243,11 @@ namespace Lodky
                 if (!Field)
                 {
                     c += 1;
+                    BoatsTemp = new string[12, 12];
+
                     for (int i = 0; i < Boattype[Boat]; i++)
                     {
+
                         if (c > 10)
                         {
                             c = 10;
@@ -267,6 +287,7 @@ namespace Lodky
                 if (!Field)
                 {
                     c -= 1;
+                    BoatsTemp = new string[12, 12];
                     for (int i = 0; i < Boattype[Boat]; i++)
                     {
                         if (c == 0)
@@ -299,12 +320,17 @@ namespace Lodky
                 if (!Field)
                 {
                     b += Boattype[Boat];
-                    if (b >= 10)
+                    BoatsTemp = new string[12, 12];
+
+                    for (int i = 0; i < Boattype[Boat]; i++)
                     {
-                        b = 10;
+                        if (b >= 10)
+                        {
+                            b = 10;
+                        }
+                        BoatsTemp[c, b-i] = " -";
                     }
-                    BoatsTemp[c, b - Boattype[Boat]] = " ";
-                    BoatsTemp[c, b] = " -";
+
                 }
                 else
                 {
@@ -324,12 +350,16 @@ namespace Lodky
                 if (!Field)
                 {
                     b -= Boattype[Boat];
-                    if (b <= 1)
+                    BoatsTemp = new string[12, 12];
+                    for (int i = 0; i < Boattype[Boat]; i++)
                     {
-                        b = 1;
+                        if (b <= 1)
+                        {
+                            b = 1;
+                        }
+                        BoatsTemp[c, b + i] = " -";
                     }
-                    BoatsTemp[c, b + Boattype[Boat]] = " ";
-                    BoatsTemp[c, b] = " -";
+                    
                 }
                 else
                 {

@@ -23,16 +23,23 @@ namespace Lodky
             string[,] FireFieldTemp = new string[12, 12];
 
             int[] Boattypes = new int[] { 1, 2, 3, 4, 5 };
-            Neco.RenderField(1, BoatPos, true, 1, 1, 0, Boattypes, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,false,false);
+            Neco.RenderField(1, BoatPos, true, 1, 1, 0, Boattypes, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,false,false,false);
 
         }
     }
     class Neco
     {
-        public static void RenderField(int Player, string[,] BoatPos, bool check, int bB, int cB, int boat, int[] Boattypes, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, bool BoatFieldCh, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp, bool Field, bool FireFieldCh)
+        public static void RenderField(int Player, string[,] BoatPos, bool check, int bB, int cB, int boat, int[] Boattypes, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, bool BoatFieldCh, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp, bool Field, bool FireFieldCh, bool Rotate)
         {
-            bool hitCheck = false;
+            bool ColorCheck = false;
+            bool BoatCheck = false;
+            ConsoleColor Red = ConsoleColor.Red;
+            ConsoleColor Yellow = ConsoleColor.Yellow;
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(bB + " " + cB);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Rotate " + Rotate);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Player " + Player);
             Console.ResetColor();
@@ -72,8 +79,11 @@ namespace Lodky
                     }
                     if (Player == 1)
                     {
+
                         if (BoatPos[c, b] == BoatsTemp[c, b])
                         {
+                            ColorCheck = true;
+
                             BoatPos[c, b] = " +";
                         }
                         if (BoatPos[c, b] == BoatsPO[c, b])
@@ -82,14 +92,20 @@ namespace Lodky
                         }
                         if (BoatsPO[c, b] == " -" && BoatsTemp[c, b] == " -")
                         {
+                            BoatCheck = true;
+
                             BoatPos[c, b] = " 0";
                         }
 
                     }
                     else
                     {
+                       
+
                         if (BoatPos[c, b] == BoatsTemp[c, b])
                         {
+                            ColorCheck = true;
+
                             BoatPos[c, b] = " +";
                         }
                         if (BoatPos[c, b] == BoatsPT[c, b])
@@ -98,12 +114,29 @@ namespace Lodky
                         }
                         if (BoatsPT[c, b] == " -" && BoatsTemp[c, b] == " -")
                         {
+                            BoatCheck = true;
+
                             BoatPos[c, b] = " 0";
                         }
 
                     }
+                    if (ColorCheck)
+                    {
+                        if (BoatCheck)
+                        {
+                            Console.ForegroundColor = Red;
 
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = Yellow;
+
+                        }
+                        ColorCheck = false;
+                        BoatCheck = false;
+                    }
                     Console.Write(BoatPos[c, b]);
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
 
@@ -115,7 +148,6 @@ namespace Lodky
                 Console.WriteLine("Lodě se nesmí překrývat!!!");
                 Console.ResetColor();
             }
-            Console.WriteLine();
             Console.WriteLine("     A B C D E F G H I J");
             for (int c = 0; c < FireField.GetLength(0); c++)
             {
@@ -223,7 +255,7 @@ namespace Lodky
             }
             if (check)
             {
-                BoatField(Player, Boattypes, boat, bB, cB, BoatPos, BoatsPO, BoatsPT, BoatsTemp, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,Field, FireFieldCh);
+                BoatField(Player, Boattypes, boat, bB, cB, BoatPos, BoatsPO, BoatsPT, BoatsTemp, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,Field, FireFieldCh,Rotate);
             }
             else
             {
@@ -234,10 +266,15 @@ namespace Lodky
             }
 
         }
-        public static void BoatField(int Player, int[] Boattype, int Boat, int b, int c, string[,] BoatPos, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp,bool Field,bool FireFieldCh)
+        public static void BoatField(int Player, int[] Boattype, int Boat, int b, int c, string[,] BoatPos, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp,bool Field,bool FireFieldCh,bool Rotate)
         {
 
             ConsoleKeyInfo name = Console.ReadKey();
+            if (name.Key == ConsoleKey.R)
+            {
+                Rotate = true;
+                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
+            }
             if (name.Key == ConsoleKey.DownArrow)
             {
                 if (!Field)
@@ -252,12 +289,25 @@ namespace Lodky
                         {
                             c = 10;
                         }
+                        if (c < 1)
+                        {
+                            c = 1;
+                        }
                         if (b > 10)
                         {
-                            b = 10;
+                            b = 10 - Boattype[Boat];
                         }
-                        BoatsTemp[c - 1, b + i] = " ";
-                        BoatsTemp[c, b + i] = " -";
+                        if (Rotate)
+                        {
+                            BoatsTemp[b + i, c - 1] = " ";
+                            BoatsTemp[b, c + i] = " -";
+                        }
+                        else
+                        {
+                            BoatsTemp[c - 1, b + i] = " ";
+                            BoatsTemp[c, b + i] = " -";
+                        }
+
 
                     }
                 }
@@ -279,7 +329,7 @@ namespace Lodky
 
                     }
                 }
-                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,Field, FireFieldCh);
+                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp,Field, FireFieldCh, Rotate);
 
             }
             if (name.Key == ConsoleKey.UpArrow)
@@ -293,6 +343,10 @@ namespace Lodky
                         if (c == 0)
                         {
                             c = 1;
+                        }
+                        if (c > 10)
+                        {
+                            c = 10 - Boattype[Boat];
                         }
                         BoatsTemp[c + 1, b + i] = " ";
                         BoatsTemp[c, b + i] = " -";
@@ -313,24 +367,19 @@ namespace Lodky
 
                     }
                 }
-                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
             }
             if (name.Key == ConsoleKey.RightArrow)
             {
                 if (!Field)
                 {
                     b += Boattype[Boat];
-                    BoatsTemp = new string[12, 12];
-
-                    for (int i = 0; i < Boattype[Boat]; i++)
+                    if (b >= 10)
                     {
-                        if (b >= 10)
-                        {
-                            b = 10;
-                        }
-                        BoatsTemp[c, b-i] = " -";
+                        b = 10;
                     }
-
+                    BoatsTemp[c, b] = " -";
+                    BoatsTemp[c, b - Boattype[Boat]] = "  ";
                 }
                 else
                 {
@@ -343,23 +392,20 @@ namespace Lodky
                     FireFieldTemp[c, b] = " -";
                 }
                
-                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
             }
             if (name.Key == ConsoleKey.LeftArrow)
             {
                 if (!Field)
                 {
                     b -= Boattype[Boat];
-                    BoatsTemp = new string[12, 12];
-                    for (int i = 0; i < Boattype[Boat]; i++)
+                    if (b <= 1)
                     {
-                        if (b <= 1)
-                        {
-                            b = 1;
-                        }
-                        BoatsTemp[c, b + i] = " -";
+                        b = 1;
                     }
-                    
+                    BoatsTemp[c, b] = " -";
+                    BoatsTemp[c, b + Boattype[Boat]] = "  ";
+
                 }
                 else
                 {
@@ -372,7 +418,7 @@ namespace Lodky
                     FireFieldTemp[c, b] = " -";
                 }
                
-                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
             }
             else if (name.Key == ConsoleKey.Enter)
             {
@@ -431,16 +477,15 @@ namespace Lodky
                         b = 1;
                         c = 1;
                         BoatsTemp = new string[12, 12];
-                        RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                        RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                     }
                     else
                     {
-                        RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                        RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                     }
                 }
                 else
                 {
-                    //RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
                     if (Field)
                     {
                         if (Player == 1)
@@ -467,11 +512,11 @@ namespace Lodky
                             c = 1;
                             FireFieldTemp = new string[12, 12];
 
-                            RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                            RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                         }
                         else
                         {
-                            RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh);
+                            RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                         }
                     }
                     

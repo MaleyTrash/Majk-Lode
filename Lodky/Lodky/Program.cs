@@ -15,7 +15,7 @@ namespace Lodky
             string[,] BoatsPO = new string[12, 12];
             string[,] BoatsPT = new string[12, 12];
             string[,] BoatsTemp = new string[12, 12];
-
+            BoatsTemp[1, 1] = " -";
             string[,] FireField = new string[12, 12];
 
             string[,] FireFieldPO = new string[12, 12];
@@ -35,6 +35,7 @@ namespace Lodky
             bool BoatCheck = false;
             ConsoleColor Red = ConsoleColor.Red;
             ConsoleColor Yellow = ConsoleColor.Yellow;
+           
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(bB + " " + cB);
@@ -186,6 +187,7 @@ namespace Lodky
                     {
                         if (FireField[c, b] == FireFieldTemp[c, b])
                         {
+                            ColorCheck = true;
                             FireField[c, b] = " +";
                         }
                         if (FireField[c, b] == FireFieldPO[c, b])
@@ -202,6 +204,7 @@ namespace Lodky
                         }
                         if (FireFieldPO[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
+                            BoatCheck = true;
                             FireField[c, b] = " 0";
                         }
 
@@ -210,6 +213,7 @@ namespace Lodky
                     {
                         if (FireField[c, b] == FireFieldTemp[c, b])
                         {
+                            ColorCheck = true;
                             FireField[c, b] = " +";
                         }
                         if (FireField[c, b] == FireFieldPT[c, b])
@@ -226,12 +230,28 @@ namespace Lodky
                         }
                         if (FireFieldPT[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
+                            BoatCheck = true;
                             FireField[c, b] = " 0";
                         }
 
                     }
+                    if (ColorCheck)
+                    {
+                        if (BoatCheck)
+                        {
+                            Console.ForegroundColor = Red;
 
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = Yellow;
+
+                        }
+                        ColorCheck = false;
+                        BoatCheck = false;
+                    }
                     Console.Write(FireField[c, b]);
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
 
@@ -272,7 +292,15 @@ namespace Lodky
             ConsoleKeyInfo name = Console.ReadKey();
             if (name.Key == ConsoleKey.R)
             {
-                Rotate = true;
+                if (!Rotate)
+                {
+                    Rotate = true;
+
+                }
+                else
+                {
+                    Rotate = false;
+                }
                 RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
             }
             if (name.Key == ConsoleKey.DownArrow)
@@ -380,6 +408,7 @@ namespace Lodky
                     }
                     BoatsTemp[c, b] = " -";
                     BoatsTemp[c, b - Boattype[Boat]] = "  ";
+                    b -= Boattype[Boat] - 1;
                 }
                 else
                 {
@@ -399,13 +428,14 @@ namespace Lodky
                 if (!Field)
                 {
                     b -= Boattype[Boat];
-                    if (b <= 1)
+                    if (b < 1)
                     {
                         b = 1;
                     }
-                    BoatsTemp[c, b] = " -";
                     BoatsTemp[c, b + Boattype[Boat]] = "  ";
+                    BoatsTemp[c, b] = " -";
 
+                    b += Boattype[Boat] - 1;
                 }
                 else
                 {
@@ -462,14 +492,16 @@ namespace Lodky
 
                         if (Boat >= 5)
                         {
-                            if(Player == 1)
+                            if (Player == 1)
                             {
                                 Player = 2;
                                 Boat = 0;
                             }
                             else
                             {
+                                Boat = 0;
                                 Player = 1;
+                                FireFieldTemp[1, 1] = " -";
                                 Field = true;
                             }
                         }
@@ -477,6 +509,13 @@ namespace Lodky
                         b = 1;
                         c = 1;
                         BoatsTemp = new string[12, 12];
+                        if (5 >= Boat && !Field)
+                        {
+                            for (int i = 0; i < Boattype[Boat]; i++)
+                            {
+                                BoatsTemp[c, b + i] = " -";
+                            }
+                        }
                         RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                     }
                     else
@@ -511,7 +550,7 @@ namespace Lodky
                             b = 1;
                             c = 1;
                             FireFieldTemp = new string[12, 12];
-
+                            FireFieldTemp[c, b] = " -";
                             RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
                         }
                         else

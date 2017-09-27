@@ -299,7 +299,7 @@ namespace Lodky
                 }
                 else
                 {
-                    Rotate = false;
+                    Rotate = false ;
                 }
                 RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, false, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);
             }
@@ -317,22 +317,24 @@ namespace Lodky
                         {
                             c = 10;
                         }
-                        if (c < 1)
-                        {
-                            c = 1;
-                        }
-                        if (b > 10)
-                        {
-                            b = 10 - Boattype[Boat];
-                        }
+                        
+                        
                         if (Rotate)
                         {
-                            BoatsTemp[b + i, c - 1] = " ";
-                            BoatsTemp[b, c + i] = " -";
+                            if (c + Boattype[Boat] > 10)
+                            {
+                                c = 11 - Boattype[Boat];
+                            }
+                            
+                            BoatsTemp[c + i, b] = " -";
+
                         }
                         else
                         {
-                            BoatsTemp[c - 1, b + i] = " ";
+                            if (c > 10)
+                            {
+                                c = 10;
+                            }
                             BoatsTemp[c, b + i] = " -";
                         }
 
@@ -348,10 +350,7 @@ namespace Lodky
                         {
                             c = 10;
                         }
-                        if (b > 10)
-                        {
-                            b = 10;
-                        }
+                     
                         FireFieldTemp[c - 1, b + i] = " ";
                         FireFieldTemp[c, b + i] = " -";
 
@@ -366,18 +365,21 @@ namespace Lodky
                 {
                     c -= 1;
                     BoatsTemp = new string[12, 12];
+                    if (c == 0)
+                    {
+                        c = 1;
+                    }
                     for (int i = 0; i < Boattype[Boat]; i++)
                     {
-                        if (c == 0)
+                        if (Rotate)
                         {
-                            c = 1;
+                            BoatsTemp[c + i, b] = " -";
                         }
-                        if (c > 10)
+                        else
                         {
-                            c = 10 - Boattype[Boat];
+
+                            BoatsTemp[c, b + i] = " -";
                         }
-                        BoatsTemp[c + 1, b + i] = " ";
-                        BoatsTemp[c, b + i] = " -";
 
                     }
                 }
@@ -401,14 +403,32 @@ namespace Lodky
             {
                 if (!Field)
                 {
-                    b += Boattype[Boat];
-                    if (b >= 10)
+                    b += 1;
+                    BoatsTemp = new string[12, 12];
+                    if (Rotate)
                     {
-                        b = 10;
+                        if(b > 10)
+                        {
+                            b = 10;
+                        }
+                        for (int i = 0; i < Boattype[Boat]; i++)
+                        {
+                            BoatsTemp[c + i, b] = " -";
+                        }
                     }
-                    BoatsTemp[c, b] = " -";
-                    BoatsTemp[c, b - Boattype[Boat]] = "  ";
-                    b -= Boattype[Boat] - 1;
+                    else
+                    {
+
+                        if (b + Boattype[Boat] > 10)
+                        {
+                            b = 11 - Boattype[Boat];
+                        }
+                        for (int i = 0; i < Boattype[Boat]; i++)
+                        {
+                            BoatsTemp[c, b + i] = " -";
+                        }
+                    }
+
                 }
                 else
                 {
@@ -427,15 +447,27 @@ namespace Lodky
             {
                 if (!Field)
                 {
-                    b -= Boattype[Boat];
+                    b -= 1;
+                    BoatsTemp = new string[12, 12];
                     if (b < 1)
                     {
                         b = 1;
                     }
-                    BoatsTemp[c, b + Boattype[Boat]] = "  ";
-                    BoatsTemp[c, b] = " -";
-
-                    b += Boattype[Boat] - 1;
+                    if (Rotate)
+                    {
+                        for (int i = 0; i < Boattype[Boat]; i++)
+                        {
+                            BoatsTemp[c + i, b] = " -";
+                        }
+                    }
+                    else
+                    {
+                        for(int i=0;i < Boattype[Boat];i++)
+                        {
+                            BoatsTemp[c, b + i] = " -";
+                        }
+                    }
+                    
                 }
                 else
                 {
@@ -472,18 +504,27 @@ namespace Lodky
 
                                 for (int i = 0; i < Boattype[Boat]; i++)
                                 {
-                                    if (b + i > 10)
+                                    if (Rotate)
                                     {
-                                        b -= Boattype[Boat];
+                                        BoatsPO[c + i, b] = " -";
+                                    }else
+                                    {
+                                        BoatsPO[c, b + i] = " -";
                                     }
-                                    BoatsPO[c, b + i] = " -";
                                 }
                             }
                             else
                             {
                                 for (int i = 0; i < Boattype[Boat]; i++)
                                 {
-                                    BoatsPT[c, b + i] = " -";
+                                    if (Rotate)
+                                    {
+                                        BoatsPT[c + i, b] = " -";
+                                    }
+                                    else
+                                    {
+                                        BoatsPT[c, b + i] = " -";
+                                    }
                                 }
                             }
                         }
@@ -513,7 +554,14 @@ namespace Lodky
                         {
                             for (int i = 0; i < Boattype[Boat]; i++)
                             {
-                                BoatsTemp[c, b + i] = " -";
+                                if (Rotate)
+                                {
+                                    BoatsTemp[c + i, b] = " -";
+                                }
+                                else
+                                {
+                                    BoatsTemp[c, b + i] = " -";
+                                }
                             }
                         }
                         RenderField(Player, BoatPos, true, b, c, Boat, Boattype, BoatsPO, BoatsPT, BoatsTemp, BoatFieldCh, FireField, FireFieldPO, FireFieldPT, FireFieldTemp, Field, FireFieldCh, Rotate);

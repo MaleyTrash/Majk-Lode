@@ -31,22 +31,20 @@ namespace Lodky
     {
         public static void RenderField(int Player, string[,] BoatPos, bool check, int bB, int cB, int boat, int[] Boattypes, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, bool BoatFieldCh, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp, bool Field, bool FireFieldCh, bool Rotate)
         {
-            bool ColorCheck = false;
-            bool BoatCheck = false;
-            ConsoleColor Red = ConsoleColor.Red;
-            ConsoleColor Yellow = ConsoleColor.Yellow;
-           
+
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
+            /*Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(bB + " " + cB);
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Rotate " + Rotate);
+            Console.WriteLine("Rotate " + Rotate);*/
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Player " + Player);
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("     A B C D E F G H I J");
+            Console.ResetColor();
             for (int c = 0; c < BoatPos.GetLength(0); c++)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 if (c != 0 && c != 11 && c != 10)
                 {
                     Console.Write(c + " ");
@@ -64,18 +62,22 @@ namespace Lodky
                 {
                     if (c == 0 || c == BoatPos.GetLength(0) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         BoatPos[c, b] = "x ";
                     }
                     if (b == 0 && c != 0 && c != BoatPos.GetLength(0) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         BoatPos[c, b] = "x";
                     }
                     if (c != 0 && b != 0 && c != BoatPos.GetLength(0) - 1 && b != BoatPos.GetLength(1) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                         BoatPos[c, b] = " -";
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         BoatPos[c, b] = " x";
                     }
                     if (Player == 1)
@@ -83,17 +85,27 @@ namespace Lodky
 
                         if (BoatPos[c, b] == BoatsTemp[c, b])
                         {
-                            ColorCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
 
                             BoatPos[c, b] = " +";
                         }
                         if (BoatPos[c, b] == BoatsPO[c, b])
                         {
+                            if (FireFieldPT[c, b] == BoatsPO[c, b])
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                            }
                             BoatPos[c, b] = " +";
                         }
                         if (BoatsPO[c, b] == " -" && BoatsTemp[c, b] == " -")
                         {
-                            BoatCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Red;
 
                             BoatPos[c, b] = " 0";
                         }
@@ -101,41 +113,37 @@ namespace Lodky
                     }
                     else
                     {
-                       
+
 
                         if (BoatPos[c, b] == BoatsTemp[c, b])
                         {
-                            ColorCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
 
                             BoatPos[c, b] = " +";
                         }
                         if (BoatPos[c, b] == BoatsPT[c, b])
                         {
+                            if (FireFieldPO[c, b] == BoatsPT[c, b])
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.White;
+
+                            }
                             BoatPos[c, b] = " +";
                         }
                         if (BoatsPT[c, b] == " -" && BoatsTemp[c, b] == " -")
                         {
-                            BoatCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Red;
 
                             BoatPos[c, b] = " 0";
                         }
 
                     }
-                    if (ColorCheck)
-                    {
-                        if (BoatCheck)
-                        {
-                            Console.ForegroundColor = Red;
 
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = Yellow;
-
-                        }
-                        ColorCheck = false;
-                        BoatCheck = false;
-                    }
                     Console.Write(BoatPos[c, b]);
                     Console.ResetColor();
                 }
@@ -149,9 +157,12 @@ namespace Lodky
                 Console.WriteLine("Lodě se nesmí překrývat!!!");
                 Console.ResetColor();
             }
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("     A B C D E F G H I J");
+            Console.ResetColor();
             for (int c = 0; c < FireField.GetLength(0); c++)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 if (c != 0 && c != 11 && c != 10)
                 {
                     Console.Write(c + " ");
@@ -169,25 +180,29 @@ namespace Lodky
                 {
                     if (c == 0 || c == FireField.GetLength(0) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         FireField[c, b] = "x ";
                     }
                     if (b == 0 && c != 0 && c != FireField.GetLength(0) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         FireField[c, b] = "x";
                     }
                     if (c != 0 && b != 0 && c != FireField.GetLength(0) - 1 && b != FireField.GetLength(1) - 1)
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                         FireField[c, b] = " -";
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         FireField[c, b] = " x";
                     }
                     if (Player == 1)
                     {
                         if (FireField[c, b] == FireFieldTemp[c, b])
                         {
-                            ColorCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             FireField[c, b] = " +";
                         }
                         if (FireField[c, b] == FireFieldPO[c, b])
@@ -195,16 +210,17 @@ namespace Lodky
                             if (FireFieldPO[c, b] == BoatsPT[c, b])
                             {
                                 FireField[c, b] = " x";
+                                Console.ForegroundColor = ConsoleColor.Green;
                             }
                             else
                             {
                                 FireField[c, b] = " +";
-
+                                Console.ForegroundColor = ConsoleColor.Red;
                             }
                         }
                         if (FireFieldPO[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
-                            BoatCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Red;
                             FireField[c, b] = " 0";
                         }
 
@@ -213,7 +229,7 @@ namespace Lodky
                     {
                         if (FireField[c, b] == FireFieldTemp[c, b])
                         {
-                            ColorCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             FireField[c, b] = " +";
                         }
                         if (FireField[c, b] == FireFieldPT[c, b])
@@ -221,35 +237,22 @@ namespace Lodky
                             if (FireFieldPT[c, b] == BoatsPO[c, b])
                             {
                                 FireField[c, b] = " x";
+                                Console.ForegroundColor = ConsoleColor.Green;
                             }
                             else
                             {
                                 FireField[c, b] = " +";
-
+                                Console.ForegroundColor = ConsoleColor.Red;
                             }
                         }
                         if (FireFieldPT[c, b] == " -" && FireFieldTemp[c, b] == " -")
                         {
-                            BoatCheck = true;
+                            Console.ForegroundColor = ConsoleColor.Red;
                             FireField[c, b] = " 0";
                         }
 
                     }
-                    if (ColorCheck)
-                    {
-                        if (BoatCheck)
-                        {
-                            Console.ForegroundColor = Red;
-
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = Yellow;
-
-                        }
-                        ColorCheck = false;
-                        BoatCheck = false;
-                    }
+                   
                     Console.Write(FireField[c, b]);
                     Console.ResetColor();
                 }

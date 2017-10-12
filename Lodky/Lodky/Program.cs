@@ -15,7 +15,9 @@ namespace Lodky
             string[,] BoatsPO = new string[12, 12];
             string[,] BoatsPT = new string[12, 12];
             string[,] BoatsTemp = new string[12, 12];
+
             BoatsTemp[1, 1] = " -";
+
             string[,] FireField = new string[12, 12];
 
             string[,] FireFieldPO = new string[12, 12];
@@ -267,14 +269,14 @@ namespace Lodky
                 Console.ResetColor();
             }
 
-            if(Player == 1)
+            if(Player == 2)
             {
-                check = WinCheck(FireFieldPO, BoatsPO);
+                check = WinCheck(FireFieldPO, BoatsPT);
             }
 
             else
             {
-                check = WinCheck(FireFieldPT, BoatsPT);
+                check = WinCheck(FireFieldPT, BoatsPO);
             }
             if (check)
             {
@@ -283,7 +285,16 @@ namespace Lodky
             else
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Zvítězil hráč " + Player);
+                if(Player == 1)
+                {
+                    Console.WriteLine("Zvítězil hráč 2");
+
+                }
+                else
+                {
+                    Console.WriteLine("Zvítězil hráč 1");
+
+                }
                 Console.ResetColor();
                 Console.ReadKey();
             }
@@ -291,7 +302,6 @@ namespace Lodky
         }
         public static void BoatField(int Player, int[] Boattype, int Boat, int b, int c, string[,] BoatPos, string[,] BoatsPO, string[,] BoatsPT, string[,] BoatsTemp, string[,] FireField, string[,] FireFieldPO, string[,] FireFieldPT, string[,] FireFieldTemp,bool Field,bool FireFieldCh,bool Rotate)
         {
-
             ConsoleKeyInfo name = Console.ReadKey();
             if (name.Key == ConsoleKey.R)
             {
@@ -500,7 +510,7 @@ namespace Lodky
                     }
                     if (!BoatFieldCh)
                     {
-                        if (Boat <= 5)
+                        if (Boat <= Boattype.GetLength(0))
                         {
                             if (Player == 1)
                             {
@@ -534,8 +544,9 @@ namespace Lodky
 
                         Boat += 1;
 
-                        if (Boat >= 5)
+                        if (Boat >= Boattype.GetLength(0))
                         {
+                            Rotate = false;
                             if (Player == 1)
                             {
                                 Player = 2;

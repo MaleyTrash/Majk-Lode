@@ -82,6 +82,7 @@ namespace Lodky
                         Console.ForegroundColor = ConsoleColor.Red;
                         BoatPos[c, b] = " x";
                     }
+
                     if (Player == 1)
                     {
 
@@ -148,6 +149,47 @@ namespace Lodky
 
                     Console.Write(BoatPos[c, b]);
                     Console.ResetColor();
+                    if (c == 4 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("    -");
+                        Console.ResetColor();
+                        Console.Write(" - Mapa");
+                    }
+                    if (c == 5 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    X");
+                        Console.ResetColor();
+                        Console.Write(" - Hranice mapy");
+                    }
+                    if (c == 6 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("    +");
+                        Console.ResetColor();
+                        Console.Write(" - Nepoložená loď");
+                    }
+                    if (c == 7 && b == 11)
+                    {
+                        Console.Write("    +");
+                        Console.Write(" - Položená loď");
+                    }
+                    if (c == 8 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    +");
+                        Console.ResetColor();
+                        Console.Write(" - Zníčená loď");
+                    }
+                    if (c == 9 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    0");
+                        Console.ResetColor();
+                        Console.Write(" - Loďe se překrývají");
+                    }
+
                 }
                 Console.WriteLine();
 
@@ -257,6 +299,35 @@ namespace Lodky
                    
                     Console.Write(FireField[c, b]);
                     Console.ResetColor();
+                    if (c == 5 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("    X");
+                        Console.ResetColor();
+                        Console.Write(" - Zásah");
+                    }
+                    if (c == 6 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("    +");
+                        Console.ResetColor();
+                        Console.Write(" - Pozice výstřelu");
+                    }
+                    if (c == 7 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    +");
+                        Console.ResetColor();
+                        Console.Write(" - Minutí");
+                    }
+                    
+                    if (c == 8 && b == 11)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("    0");
+                        Console.ResetColor();
+                        Console.Write(" - Výstřely se překrývají");
+                    }
                 }
                 Console.WriteLine();
 
